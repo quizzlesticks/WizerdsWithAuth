@@ -1,0 +1,65 @@
+const GameManager = require('./gamemanager.js');
+
+const Game = new GameManager();
+
+const cookie_expiration_days = 1;
+
+function setCookie(cname, cvalue, exdays) {
+	const d = new Date();
+	d.setTime(d.getTime() + (exdays*24*60*60*1000));
+	let expires = "expires=" + d.toUTCString();
+	document.cookie = cname + "=" + cvalue + ";" + expires + "; path=/";
+}
+
+socket.on("cookie_login_status", (msg) => {
+	if(msg.status == "success") {
+		document.getElementById("logged_in").innerHTML = "Current User: " + msg.username;
+		document.getElementById("error_reason").innerHTML = "Error Reason: ";
+	} else {
+		document.getElementById("logged_in").innerHTML = "Current User: ";
+		document.getElementById("error_reason").innerHTML = "Error Reason: " + msg.reason + " (Cookie Login)";
+	}
+});
+
+socket.on("login_status", (msg) => {
+	if(msg.status == "success") {
+		setCookie("UUID", msg.uuid, 1);
+		document.getElementById("logged_in").innerHTML = "Current User: " + msg.username;
+		document.getElementById("error_reason").innerHTML = "Error Reason: ";
+	} else {
+		document.getElementById("logged_in").innerHTML = "Current User: ";
+		document.getElementById("error_reason").innerHTML = "Error Reason: " + msg.reason + " (Login)";
+	}
+});
+
+socket.on("register_status", (msg) => {
+	if(msg.status == "success") {
+		setCookie("UUID", msg.uuid, 1);
+		document.getElementById("logged_in").innerHTML = "Current User: " + msg.username;
+		document.getElementById("error_reason").innerHTML = "Error Reason: ";
+	} else {
+		document.getElementById("logged_in").innerHTML = "Current User: ";
+		document.getElementById("error_reason").innerHTML = "Error Reason: " + msg.reason + " (Register)";
+	}
+});
+
+const login_form = document.getElementById('login_form');
+const register_form = document.getElementById('register_form');
+
+login_form.addEventListener('submit', function(e) {
+	e.preventDefault();
+	if(login_form.uname.value && login_form.pswd.value) {
+		socket.emit('login', {uname: login_form.uname.value, pswd: login_form.pswd.value});
+		login_form.uname.value = '';
+		login_form.pswd.value = '';
+	}
+});
+
+register_form.addEventListener('submit', function(e) {
+	e.preventDefault();
+	if(register_form.uname.value && register_form.pswd.value) {
+		socket.emit('register', {uname: register_form.uname.value, pswd: register_form.pswd.value});
+		register_form.uname.value = '';
+		register_form.pswd.value = '';
+	}
+});

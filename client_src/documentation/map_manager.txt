@@ -1,0 +1,7 @@
+The map manager is responsible for drawing the floor and walls.
+
+The map manager has the responsibility of calling the loads for the maps.
+The maps themselves will draw their own loading screens.
+The maps will then be called by the map managers draw function to determine
+the tiles to draw.
+The map managers draw is called by the game loop.

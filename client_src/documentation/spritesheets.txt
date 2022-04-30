@@ -1,0 +1,10 @@
+For now unloading spritesheets isn't supported. There will likely not be enough
+sprites to ever matter (currently at 24kB of sprites). If this becomes a problem
+in the future then context dependant spritesheets can be implemented. Things
+like character sprites and bullet sprites should always be loaded since someone
+may join the dungeon or whatever and the sprites will be need immediately.
+Things like enemies and dungeon tiles can be loaded for the specific
+portal/dungeon is accessed. In order to flush these out of browser memory the
+img needs to have it's src set to a 1x1 pixel image or something and then be
+removed from the DOM. The browser will decide when this 1x1 pixel gets removed
+from memory but the larger spritesheet will be unloaded immediately.

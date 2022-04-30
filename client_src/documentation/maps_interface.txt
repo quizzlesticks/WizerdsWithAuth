@@ -1,0 +1,87 @@
+The maps make heavy use of RegionProfiles. Please see region_profiles.txt for
+more info.
+
+The maps manager is responsible for drawing the floors and walls and stuff for
+each dungeon and portal or nexus. This is done through a common interface.
+
+The top level mapmanager is a generic object. The game should have a single
+mapmanager. This mapmanager gets passed a map instantiation that utilizes the
+mapmanagers interface. It is up to each class to implement the interface in
+whatever way is deemed fit. For example, the portal map needs to generate the
+map based on a seed.
+The following describes the interface required for a class to be used by the
+mapsinterface.
+Each map must generate its own map, return these to the map manager for drawing.
+And each map must implement its own loading screen. Once map load is called
+then map load is responsible for all drawing until it finishes loading and calls
+back to the map manager.
+
+****MapCoordinates****
+The maps are condensed tile maps. Meaning 0210 defines four tiles to draw. For
+this line of a map example the first tile would be whatever 0 type is on the
+maps region manager. The tile has bigger screen space of 32x32 so the map
+above is 128x32 pixels. A map coordinate of (0,0) refers to the first 0. A map
+coordinate of (1,0) refers to the 2. This means that all maps must be 2D arrays
+and map coordinates will always be >= 0.
+
+------Interface------
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+--load(ssm, callback)--
+-Inputs-
+ssm - The sprite sheet manager.
+
+callback - a function that should be called once all the associated spritesheets
+are loaded for the needed map. This allows new maps to be loaded when they are
+needed. Again the maps will not be unloaded so loading should be fast on the
+second entry to a dungeon/portal type. The Map should load all the sprites it
+needs before calling the callback.
+
+-Usage-
+The map should call ssm.load(filename, "Tile" + "ProfileName" + i, Game.tile_size, Game.tile_size, 1, 1)
+on every single filename in the profile it wants to use.
+The naming convention makes use of the profile name plus the region descriptor
+meaning when we need to draw in the future and we have the region descriptor we
+just call ssm.draw with "TileProfileName" + region.
+"Tile" is used as a namespace for all the various tiles and walls.
+
+-Outputs-
+none
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+--regionAtPoint(mapPos.x, mapPos.y)--
+
+-Inputs-
+mapPos.x(int, MapCoord) - horizontal position to be drawn
+mapPos.y(int, MapCoord) - vertical position to be drawn
+
+-Outputs-
+(Int) Must return a RegionDescriptor from the RegionManager that indicates what
+tile type will be drawn.
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+--get region_profile()--
+
+-Inputs-
+None
+
+-Outputs-
+The key of the RegionProfile to be used during draw operations
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+****PortalMap*****
+The portal maps are generated from a seed. The seed is passed to the client with
+the randomness settings (radius, relax_count, spacing). The map is generated
+everytime the client enters the portal. This allows large dynamic maps
+with only a single server transaction. The server and client will each follow
+the same random process to generate the map meaning they both have a copy.
+
+****DungeonMap****
+Again, the process needs to be normalized so that a seed generates the
+same random dungeon so the server and client only have to share seeds.
+
+****NexusMap****
+The nexus map will be constant and static.
+
+When the player goes to the nexus, the portal, or a dungeon
+then the MapManager is assigned to the object implementing the getRegionAtPoint
+function. The map is then drawn by requesting the region identifiers for
+each map coord the player can see (plus some so they can't move faster than map
+draws).

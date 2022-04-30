@@ -1,0 +1,38 @@
+The region profiles holds all the available map profiles.
+The region profiles have a namespace,
+ should indicate the descriptors for the region, the
+filenames associated to each region and the colors to be drawn if the region
+doesnt have a tile.
+
+Tile size indicates the size of tiles in this region, used for the SSM.
+If assigned to undefined then the RegionProfiles.tile_size is used instead.
+
+The region namespace is used for looking into the SSM for the loaded sprites.
+This implies that every region will have unique spritesheets as they cant
+be shared and must be reloaded.
+
+The region descriptors are useful names as keys and an index as the value.
+RegionProfile = {forest: 0, mountain: 1};
+
+The region filenames are an array indicating the spritesheet filename to be
+loaded for each region such as
+RegionFilenames = ['/spritesheets/forest', undefined];
+
+The region colors indicate what color the 32x32 tile will be. The 32x32 tile is
+drawn if the region has no filename.
+RegionColors = ['#000000', '#121212'];
+
+Therefore a profile looks like
+
+const RegionProfiles = {
+    tile_size: 64,
+    ForestDungeon: {
+        tile_size: undefined, //Use the default tile_size
+        RegionNamespace: "Forest",
+        RegionProfile: {forest: 0, mountain: 1},
+        RegionFilenames: ['/spritesheets/forest', undefined],
+        RegionColors: ['#000000', '#121212']
+    }
+}
+
+Here the mountain will be colored will the forest will be sprited

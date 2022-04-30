@@ -1,0 +1,75 @@
+The animation profiles have the following layout
+
+Basic:
+
+ProfileNamespace: {
+    AnimationName: {
+        id: "Unique Identifier",
+        sprite_width: width in pixels of a single sprite,
+        sprite_height: height in pixels of a single sprite,
+        sprite_columns: number of sprites in a row in grid,
+        sprite_rows: number of sprite rows in grid,
+        offset_x: specifies the x offset for the beginning of the sprite grid
+        offset_y: specifies the y offset for the beginning of the sprite grid
+        frame_delay: when drawnext is called we skip this many before actually doing it
+        default_scale: scale to use if none is provided
+        filename: where to find the spritesheet
+        animation: [start, stop] coordinates are in 1d space of [sprite_row,sprite_column] tells what sprites to loop over
+
+    }
+}
+
+A little more complex:
+
+ProfileNamespace: {
+    AnimationName: {
+        id: "Unique Identifier",
+        sprite_width: width in pixels of a single sprite,
+        sprite_height: height in pixels of a single sprite,
+        sprite_columns: number of sprites in a row in grid,
+        sprite_rows: number of sprite rows in grid,
+        offset_x: specifies the x offset for the beginning of the sprite grid
+        offset_y: specifies the y offset for the beginning of the sprite grid
+        frame_delay: when drawnext is called we skip this many before actually doing it
+        default_scale: scale to use if none is provided
+        filename: where to find the spritesheet
+        animations: like animation except multiple key, value pairs with different animations, stored in object
+    }
+}
+
+Real complex:
+
+ProfileNamespace: {
+    SuperAnimationName: {
+        filename: lets you specify that every sprite should be pulled from the same spot, if used then filename in AnimationName is ignored
+        AnimationName: {
+            id: "Unique Identifier",
+            sprite_width: width in pixels of a single sprite,
+            sprite_height: height in pixels of a single sprite,
+            sprite_columns: number of sprites in a row,
+            sprite_rows: number of sprite rows,
+            offset_x: specifies the x offset for the beginning of the sprite grid
+            offset_y: specifies the y offset for the beginning of the sprite grid
+            default_scale: scale to use if none is provided
+            offset_x: specifies the x offset for the beginning of the sprite grid
+            offset_y: specifies the y offset for the beginning of the sprite grid
+            filename: where to find the spritesheet, allows unique sprite sheets even in group
+            animations: like animation except multiple key, value pairs with different animations, stored in object
+       }
+       AnimationNameTwo: {
+           id: "Unique Identifier",
+           sprite_width: width in pixels of a single sprite,
+           sprite_height: height in pixels of a single sprite,
+           sprite_columns: number of sprites in a row,
+           sprite_rows: number of sprite rows,
+           offset_x: specifies the x offset for the beginning of the sprite grid
+           offset_y: specifies the y offset for the beginning of the sprite grid
+           frame_delay: when drawnext is called we skip this many before actually doing it
+           default_scale: scale to use if none is provided
+           filename: where to find the spritesheet, allows unique sprite sheets even in group
+           animations: like animation except multiple key, value pairs with different animations, stored in object
+      }
+    AnimationNameOfNoneSuper: {
+        id: ....
+    }
+}

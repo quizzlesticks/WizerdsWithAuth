@@ -1,0 +1,42 @@
+The task scheduler allows for async tasks to be performed before a task
+is executed.
+Since the tasks scheduled may be completed before the next task is assigned
+the usage requires that the callback is set only after all tasks have been
+assigned. Every function that will be used by the task scheduler must implement
+a callback to taskFinished for the task scheduler.
+
+I.e. if we want to run a task called "Yelp" after we run "loadSpiders" and
+"loadSnakes" then we could use:
+TS = new TaskScheduler();
+TS.registerTask();
+TS.registerTask();
+TS.callback = Yelp;
+loadSpiders(TS.finishedTask);
+loadSnakes(TS.finishedTask);
+
+OR
+
+TS = new TaskScheduler();
+TS.registerTask();
+loadSpiders(TS.finishedTask);
+TS.registerTask();
+loadSnakes(TS.finishedTask);
+TS.callback = Yelp;
+
+If no tasks are registered before the callback is set then the scheduler will
+run callback immediately.
+
+TS = new TaskScheduler();
+TS.callback = Yelp; //Yelp runs immediately
+TS.registerTask();
+loadSpiders(TS.finishedTask);
+TS.registerTask();
+loadSnakes(TS.finishedTask);
+
+An optional parameter is allowed for the callback and is implementation specific
+it defaults to undefined.
+The optional parameter is only passed if it is not undefined.
+You could use the optional parameter with any number of parameters by passing
+them as an object and using the object in the callback.
+When using the op you cannot use the callback setter and must call
+setCallback(cb,op)
