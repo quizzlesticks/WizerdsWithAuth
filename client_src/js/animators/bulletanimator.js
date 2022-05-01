@@ -12,15 +12,9 @@ class BulletAnimator extends ProfileAnimator {
     #lifetime_counter = 0;
     #player_fired = false;
 
-    #bounding_rectangle = {top: undefined, bottom: undefined, left: undefined, right: undefined};
-
     constructor(profile) {
         super(profile)
         super.defineAnimationLoop(profile.animation);
-        this.#bounding_rectangle.top = this.position.y - profile.sprite_height*profile.default_scale/2;
-        this.#bounding_rectangle.bottom = this.position.y + profile.sprite_height*profile.default_scale/2;
-        this.#bounding_rectangle.left = this.position.x - profile.sprite_width*profile.default_scale/2;
-        this.#bounding_rectangle.right = this.position.x + profile.sprite_width*profile.default_scale/2;
     }
 
     get active() {
@@ -28,18 +22,18 @@ class BulletAnimator extends ProfileAnimator {
     }
 
     get bounding_rectangle() {
-        return this.#bounding_rectangle;
+        return this.bounding_rectangle;
     }
 
     set x(xn) {
-        this.#bounding_rectangle.left += xn-this.position.x;
-        this.#bounding_rectangle.right += xn-this.position.x;
+        this.bounding_rectangle.left += xn-this.position.x;
+        this.bounding_rectangle.right += xn-this.position.x;
         this.position.x = xn;
     }
 
     set y(yn) {
-        this.#bounding_rectangle.top += yn-this.position.y;
-        this.#bounding_rectangle.bottom += yn-this.position.y;
+        this.bounding_rectangle.top += yn-this.position.y;
+        this.bounding_rectangle.bottom += yn-this.position.y;
         this.position.y = yn;
     }
 

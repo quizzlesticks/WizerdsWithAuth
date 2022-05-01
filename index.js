@@ -7,6 +7,7 @@ const { MongoClient } = require('mongodb');
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 const cookie_parser = require('cookie');
+const MapManager = require('./server_src/js/maps/mapmanager_server.js');
 var fs = require('fs');
 
 const https_port = 4000;
@@ -50,8 +51,6 @@ const https_server = https.createServer(https_options, app);
 const io = new Server(https_server, socket_options);
 var login_collection;
 
-const map_seed = {seed: "RealmOfTheMattGod", radius: 30, relax_count: 6, width: 1000, height: 800};
-
 function blankDBProfile() {
 	return {mongo_id: undefined, uuid: undefined};
 }
@@ -65,6 +64,7 @@ io.on('connection', async (socket) => {
 	socket.player_profile = blankPlayerProfile(socket.id);
 	socket.current_room;
 	socket.db_profile = blankDBProfile();
+
 	if(socket.handshake.headers.cookie) {
 		var cookies = cookie_parser.parse(socket.handshake.headers.cookie);
 		if(cookies.UUID) {
@@ -108,6 +108,7 @@ io.on('connection', async (socket) => {
 		result = await login_collection.findOne({uuid: UUID});
 		while(1) {
 			if(result) {
+				UUID = uuidv4();
 				result = await login_collection.findOne({uuid: UUID});
 			} else {
 				break;
@@ -159,6 +160,7 @@ io.on('connection', async (socket) => {
 		var UUID_result = await login_collection.findOne({uuid: UUID});
 		while(1) {
 			if(UUID_result) {
+				UUID = uuidv4();
 				UUID_result = await login_collection.findOne({uuid: UUID});
 			} else {
 				break;
@@ -215,23 +217,16 @@ io.on('connection', async (socket) => {
         socket.to(socket.current_room).emit('bullet_fire', data);
     });
 
-	socket.portal_list = {'0': {map_type: "NexusMap", upid: 0, pos: {x: 0, y: 0}, lifetime: 0, op: undefined}, 'ASS': {map_type: "PortalMap", upid: "ASS", pos: {x: 0, y: 64}, lifetime: 0, op: map_seed}};
-
 	//all we receive back is the upid
 	socket.on('enter_portal', (data) => {
-		var new_map = {};
-		if(socket.portal_list[data.upid] == undefined) {
-			data.upid = '0';
-		}
-		new_map.map_type = socket.portal_list[data.upid].map_type;
-		new_map.upid = data.upid;
-		new_map.op = socket.portal_list[data.upid].op;
+		var new_map = MapManager.getProfileFromUPID(data.upid);
 		socket.leave(socket.current_room);
 		socket.current_room = new_map.upid;
 		socket.join(socket.current_room);
 		socket.emit('load_map', new_map);
-		if(new_map.upid == '0') {
-			socket.emit('spawn_new_portal', socket.portal_list['ASS']);
+		let perm_portals = MapManager.getPermenantPortalsFromUPID(new_map.upid);
+		if(perm_portals != undefined && perm_portals.length != 0) {
+			socket.emit('spawn_perm_portals', {portals: MapManager.getPermenantPortalsFromUPID(new_map.upid)});
 		}
 	});
 

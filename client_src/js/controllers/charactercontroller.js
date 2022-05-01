@@ -24,7 +24,6 @@ class CharacterController {
     #_projectile_speed = 8;
     #_projectile_lifetime = 120;
     #_projectile_spawn_radius = 50;
-    #_projectile_spawn_offset = {x: 15, y: 10};
     #_attack_min = 10;
     #_attack_max = 20;
 
@@ -136,8 +135,8 @@ class CharacterController {
             if(this.#_dexterity_counter == 0){
                 //fire
                 const angle = Camera.mouseTangent(this.#_last_mousedown_position);
-                const pos_x = this.x + Math.cos(angle)*this.#_projectile_spawn_radius - this.#_projectile_spawn_offset.x;
-                const pos_y = this.y + Math.sin(angle)*this.#_projectile_spawn_radius - this.#_projectile_spawn_offset.y;
+                const pos_x = this.x + Math.cos(angle)*this.#_projectile_spawn_radius;
+                const pos_y = this.y + Math.sin(angle)*this.#_projectile_spawn_radius;
                 const speed_x = this.#_projectile_speed*Math.cos(angle);
                 const speed_y = this.#_projectile_speed*Math.sin(angle);
                 const damage = this.#_attack_min + Math.random()*(this.#_attack_max-this.#_attack_min);
@@ -159,6 +158,7 @@ class CharacterController {
         }
         game_events.player_pos = {x: this.#position.x, y: this.#position.y};
         game_events.misc_key_states = this.#_misc_key_states;
+        game_events.player_rect = this.#_animator.bounding_rectangle;
         return game_events;
     }
 

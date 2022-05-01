@@ -68,7 +68,7 @@ class MapManager {
 	}
 
 	render(game_events={}) {
-		if (this.#map_type == "PortalMap") {
+		if (this.#map_type == "RealmMap") {
 			if (game_events.misc_key_states.KeyM == 1) {
 				delete(game_events.misc_key_states.KeyM);
 				this.#map_rendering = !this.#map_rendering;

@@ -112,13 +112,13 @@ const AnimationProfiles = {
     PortalProfiles: {
         NexusMap: {
             id: "NexusMapPortal",
-            sprite_width: 22,
+            sprite_width: 12,
             sprite_height: 30,
             sprite_columns: 1,
             sprite_rows: 6,
             offset_x: 0,
             offset_y: 0,
-            default_scale: 1,
+            default_scale: 2,
             frame_delay: 8,
             filename: "Spritesheets/portal.png",
             animations: {"Normal": [0, 1, 2, 3],
@@ -126,9 +126,9 @@ const AnimationProfiles = {
             centering: true
         },
 
-        PortalMap: {
-            id: "PortalMapPortal",
-            sprite_width: 22,
+        RealmMap: {
+            id: "RealmMapPortal",
+            sprite_width: 12,
             sprite_height: 30,
             sprite_columns: 1,
             sprite_rows: 6,
@@ -155,7 +155,8 @@ const AnimationProfiles = {
             frame_delay: 3,
             default_scale: 1,
             filename: "/Spritesheets/BlueBullet.png",
-            animation: [0, 1, 2, 3]
+            animation: [0, 1, 2, 3],
+            centering: true
         }
     },
 

@@ -87,7 +87,7 @@ class SpriteSheetManager extends Painter {
             this.viewport.context.save();
             //get the center of the image to draw
             if(this.#centering) {
-                this.viewport.context.translate(dx + dWidth/2, dy + dHeight/2);
+                this.viewport.context.translate(dx, dy);
             } else {
                 this.viewport.context.translate(dx, dy + dHeight/2);
             }
@@ -95,7 +95,7 @@ class SpriteSheetManager extends Painter {
             this.viewport.context.rotate(rotation);
             //move back for draws
             if(this.#centering) {
-                this.viewport.context.translate( -(dx + dWidth/2), -(dy + dHeight/2));
+                this.viewport.context.translate( -dx, -dy);
             } else {
                 this.viewport.context.translate(-dx, -(dy + dHeight/2));
             }

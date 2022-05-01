@@ -1,8 +1,8 @@
-const PortalMap = require('./portalmap.js');
+const RealmMap = require('./realmmap.js');
 const NexusMap = require('./nexusmap.js');
 
 const MapFactory = {
-    PortalMap: PortalMap,
+    RealmMap: RealmMap,
     NexusMap: NexusMap
 };
 

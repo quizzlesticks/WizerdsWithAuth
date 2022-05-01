@@ -45,17 +45,6 @@ class Camera extends Window {
         const y = mouse_pos.y - this.camera_position.screen_space.y;
         return Math.atan2(y,x);
     }
-
-    checkCollision(rect1, rect2) {
-        if (rect1.left < rect2.right &&
-            rect1.right > rect2.left &&
-            rect1.top < rect2.bottom &&
-            rect1.bottom > rect2.top) {
-                return true;
-        }
-        return false;
-    }
-
 }
 
 module.exports = new Camera();

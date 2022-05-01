@@ -35,6 +35,10 @@ class SuperProfileAnimator {
         this.changeProfileByIndex(0);
     }
 
+    get bounding_rectangle() {
+        return this.#cur_animatable.bounding_rectangle;
+    }
+
     //Uses profile key
     getSSMIDByProfileKey(key) {
         return this.#profile_key_to_ssm_key_mapping[key];
@@ -68,8 +72,8 @@ class SuperProfileAnimator {
     }
 
     draw() {
-        const sp = SSM.viewport.camera.worldToScreenSpace({x: this.position.x, y: this.position.y});
-        SSM.drawSprite(this.#cur_ssm_key, this.#cur_animatable.frame, sp.x, sp.y, this.#rotation, this.scale);
+        this.#cur_animatable._position = this.position;
+        this.#cur_animatable.draw();
     }
 
     drawNext() {

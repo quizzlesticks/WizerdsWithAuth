@@ -1,13 +1,14 @@
 const MapProfiles = {
-    PortalMap: {
-        LoadScreenText: "Portal",
+    RealmMap: {
+        LoadScreenText: "Realm",
         TextSizeInPx: 40,
         tombstones: 2,
-        RegionNamespace: "PortalMap",
+        RegionNamespace: "RealmMap",
         RegionDescriptors: {
             deepocean: 0, ocean: 1, beach: 2, forest: 3,
             grasslands: 4, highlands: 5, lowmountains: 6, mountain_top: 7
         },
+        map_options: {radius: 30, relax_count: 6, width: 1000, height: 800, number_of_spawns: 3},
         RegionColors: ["#6134eb", "#33ccff", "#ffff66", "#007027",
                        "#7fba25", "#cfcf1b", "#808080", "#6f627f"],
         MinimapColors: ["#6134eb", "#33ccffaa", "#ffff66aa", "#007027aa",

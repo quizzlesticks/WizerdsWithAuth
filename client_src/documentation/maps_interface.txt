@@ -66,8 +66,8 @@ None
 The key of the RegionProfile to be used during draw operations
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-****PortalMap*****
-The portal maps are generated from a seed. The seed is passed to the client with
+****RealmMap*****
+The realm maps are generated from a seed. The seed is passed to the client with
 the randomness settings (radius, relax_count, spacing). The map is generated
 everytime the client enters the portal. This allows large dynamic maps
 with only a single server transaction. The server and client will each follow

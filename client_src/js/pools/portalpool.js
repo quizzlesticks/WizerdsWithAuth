@@ -12,6 +12,7 @@ class PortalPool {
             this.#pool.push(new PortalAnimator("NexusMap"));
         }
         this.addPortal = this.addPortal.bind(this);
+        this.addPermPortals = this.addPermPortals.bind(this);
         this.drawAndCheck = this.drawAndCheck.bind(this);
         SocketManager.registerModule("portal_manager", this);
         AnimationLoopSubscribers.subscribe(this.drawAndCheck, AnimationLoopSubscribers.priority_list["portal_manager"]);
@@ -34,6 +35,12 @@ class PortalPool {
         }
     }
 
+    addPermPortals(portals) {
+        for(let i = 0; i < portals.length; i++) {
+            this.addPortal(portals[i].map_type, portals[i].upid, portals[i].pos, portals[i].lifetime);
+        }
+    }
+
     killAllPortals() {
         for (var i = 0; i < PoolProfiles.Portals.pool_size; i++) {
             if(this.#pool[i].active) {
@@ -51,7 +58,7 @@ class PortalPool {
         for (var i = 0; i < PoolProfiles.Portals.pool_size; i++) {
             if(this.#pool[i].active) {
                 this.#pool[i].update();
-                if(game_events.misc_key_states.KeyR == 1) {
+                if(game_events.misc_key_states.KeyR == 1 && this.#pool[i].checkCollision(game_events.player_rect)) {
                     delete(game_events.misc_key_states.KeyR);
                     SocketManager.sendEnterPortal(this.#pool[i].upid);
                     this.killAllPortals();

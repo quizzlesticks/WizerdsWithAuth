@@ -4,7 +4,6 @@ class PortalAnimator extends ProfileAnimator {
     #upid = "0";
     #lifetime = 0;
     #lifetime_counter = 0;
-    bounding_rectangle = {top: 0, bottom: 0, left: 0, right: 0};
     #active = false;
     #blinking = false;
 
@@ -14,7 +13,9 @@ class PortalAnimator extends ProfileAnimator {
         super(profile);
     }
 
+    //portal positions are passed as map_positions
     activate(profile, upid, pos, lifetime) {
+        pos = this.SSM.viewport.camera.mapToWorldSpace(pos);
         this.setProfile(profile, pos.x, pos.y);
         this.#upid = upid;
         this.#lifetime = lifetime;

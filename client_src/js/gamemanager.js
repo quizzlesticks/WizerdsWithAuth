@@ -43,7 +43,7 @@ class GameManager {
 
     //misc_key_states has a key of "KeyR" or something
     //the value for the key is 0 - not pressing, 1 - just pressed, 2 - sustained press
-    game_events = {misc_key_states: {}, player_pos: {x: 0, y: 0}};
+    game_events = {misc_key_states: {}, player_pos: {x: 0, y: 0}, player_rect: {top: undefined, bottom: undefined, left: undefined, right: undefined}};
 
     loop() {
         SSM.clearScreen("red");

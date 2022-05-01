@@ -39,6 +39,8 @@ class SocketManager {
         this.sendEnterPortal = this.sendEnterPortal.bind(this);
         this.onNewPortal = this.onNewPortal.bind(this);
         this.#_sock.on('spawn_new_portal', this.onNewPortal);
+        this.onPermPortals = this.onPermPortals.bind(this);
+        this.#_sock.on('spawn_perm_portals', this.onPermPortals);
 
         this.onLoadMap = this.onLoadMap.bind(this);
         this.#_sock.on('load_map', this.onLoadMap);
@@ -92,6 +94,10 @@ class SocketManager {
 	onNewPortal(data) {
         this.#module_list['portal_manager'].addPortal(data.map_type, data.upid, data.pos, data.lifetime);
 	}
+
+    onPermPortals(data) {
+        this.#module_list['portal_manager'].addPermPortals(data.portals);
+    }
 
     onLoadMap(data) {
         this.#_upid = data.upid;
